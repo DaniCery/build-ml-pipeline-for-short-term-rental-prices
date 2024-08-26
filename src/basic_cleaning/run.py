@@ -38,6 +38,11 @@ def go(args):
     logger.info("Dropping min max prices")
     df = df[(df['price'] >= args.min_price) & (df['price'] <= args.max_price)]
 
+    # Drop datapoints outside the boundaries
+    idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
+    df = df[idx].copy()
+
+
     filename = args.output_artifact
 
     df.to_csv(filename, index=False)
